@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Button Links</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        color: #548c21;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-image: url('https://blogger.googleusercontent.com/img/a/AVvXsEhtuQSU3VYKc8YdenDa64PQgEigd7iIETNkyNKkUUOso2pBqAbIr7C4H-Vb7gLnzJLQJ4VaZy0n1jnk4pjKl4ZS3bfSlMiCdT9ZdU62n6toMH-cHjQ-GyxWNrF4LeXq5t9UbvkK5Kp5lfCexkdNqsw_TRJbLgh9HAc7lYYmkqEVK3D6IDbVJ6P9kuEiWP8C');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: 20px;
+      }
+
+      .logo-title-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 50px; /* Add space below the logo and title */
+      }
+
+      .logo {
+        width: 300px; /* Increased width */
+        margin-bottom: 20px; /* Space between logo and title */
+      }
+
+      .title {
+        font-size: 36px;
+        font-weight: bold;
+        color: #548c21;
+        margin-bottom: 50px; /* Space below the title */
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 30px; /* Add space between the buttons */
+        align-items: center;
+        width: 100%; /* Make sure the container spans the full width */
+      }
+
+      .button-link {
+        padding: 40px;
+        font-family: Impact;
+        font-size: 36px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-size: cover;
+        background-position: center;
+        width: 300px; /* Increased width */
+        height: 150px; /* Increased height */
+      }
+
+      .button-link:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .button-1 {
+        background-image: url('https://www.escapeworksdenver.com/wp-content/uploads/ewd_background_1.jpg');
+      }
+
+      .button-2 {
+        background-image: url('https://www.escapeworksdenver.com/wp-content/uploads/ewd_background_1.jpg');
+      }
+
+      /* Mobile Styles */
+      @media (max-width: 768px) {
+        .logo {
+          width: 200px; /* Adjusted logo size for mobile */
+        }
+
+        .title {
+          font-size: 28px;
+          margin-bottom: 30px;
+        }
+
+        .container {
+          gap: 75px; /* Less gap between buttons on mobile */
+        }
+
+        .button-link {
+          width: 250px; /* Adjusted button size for mobile */
+          height: 100px;
+          font-size: 28px; /* Smaller font size for mobile */
+        }
+      }
+    </style>
+    <script>
+      // JavaScript to handle button clicks
+      function openLink(url) {
+        window.open(url, "_blank");
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Logo and Title in the center -->
+    <div class="logo-title-container">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhqpeiVtcnTNcK-ZlIARqHkQIUtE5DYl8uIx-F0VvKiT0E_vasdC6hlWQCGgF7Pve1QFoHzFMNxlVBkf9k4FnyuMCmlS8VBm36U1HQzcWx3yBnIMlu5drlIBkTGr7O8AFrrT3q4O0g_R1CzY9QOd7Ee00oykLzmYvuWSnQV2ADcciSseJBS7VSwWyk0vG2H/s1207/IMG_0806.PNG" alt="Logo" class="logo">
+      <div class="title">Lost & Found - Building 9</div>
+    </div>
+
+    <div class="container">
+      <div class="button-link button-1" onclick="openLink('https://docs.google.com/forms/d/e/1FAIpQLSd72of1dtt0ZGpppzoDSV0oCCMZDSEz0bZk7Fe8u6ZB6IeW7Q/viewform?usp=sf_link')">Found</div>
+      <div class="button-link button-2" onclick="openLink('https://script.google.com/macros/s/AKfycbwXV0hwbAl5mufh0aY5QuCG64mnraqoyND6HqGjBn2eFIsM-UsNbk9HmoyzGzokOUze/exec')">Lost</div>
+    </div>
+  </body>
+</html>
