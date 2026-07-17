@@ -19,4 +19,4 @@ The rest = Google Sheet
 *เข้า google sheet --> Extension --> Appscript
 
 Line contact : kaopun_9285
-Kaopun (TU 86)
+Kaopun (หัวหน้าฝ่าย IT ตึก 9 - 2024 - TU 86)
