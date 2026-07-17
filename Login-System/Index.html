@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Registration Form</title>
+    <style>
+      /* Reset default browser styles */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg3-xwKz43LFizlN3nYJ2mE_TJFFmseWlFBiuQCzfnLlKioXsPqETY_J4nuDSIoscR7ZcyPA-jH6qaD_MAh1uqeRRqRuQgFvgWG-GES9FJC6nogyAJhqWLLtJlrHM1sNgh1bTwlcAYNohURx3MsagYgQlb38f5SIto0bRaL4mNlSlgLt4PUAGOFb6llVnsR/s1080/IMG_0815.JPG'); /* Replace with your background image URL */
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 400px;
+        background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+      }
+
+      .logo {
+        display: block;
+        margin: 0 auto 20px auto;
+        max-width: 100px; /* Adjust size as needed */
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      .form-group input:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+      }
+
+      button {
+        width: 100%;
+        padding: 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .success-message {
+        margin-top: 20px;
+        color: green;
+        text-align: center;
+        display: none;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhqpeiVtcnTNcK-ZlIARqHkQIUtE5DYl8uIx-F0VvKiT0E_vasdC6hlWQCGgF7Pve1QFoHzFMNxlVBkf9k4FnyuMCmlS8VBm36U1HQzcWx3yBnIMlu5drlIBkTGr7O8AFrrT3q4O0g_R1CzY9QOd7Ee00oykLzmYvuWSnQV2ADcciSseJBS7VSwWyk0vG2H/s1207/IMG_0806.PNG" alt="Logo" class="logo"> <!-- Replace with your logo URL -->
+      <h2>ระบบลงทะเบียน แชทบอทตอบปัญหาวิชาการ ตึก 9</h2>
+      <form id="registrationForm" onsubmit="return validateForm()">
+        <div class="form-group">
+          <label for="name">ชื่อจริง</label>
+          <input type="text" id="name" name="name" placeholder="กรอกชื่อจริง" required>
+          <div class="error-message" id="nameError">กรุณากรอกชื่อจริง</div>
+        </div>
+        <div class="form-group">
+          <label for="surname">นามสกุล</label>
+          <input type="text" id="surname" name="surname" placeholder="กรอกนามสกุล" required>
+          <div class="error-message" id="surnameError">กรุณากรอกนามสกุล</div>
+        </div>
+        <div class="form-group">
+          <label for="class">ห้องเรียน</label>
+          <input type="text" id="class" name="class" placeholder="กรอกห้องเรียน" required>
+          <div class="error-message" id="classError">กรุณากรอกห้องเรียน</div>
+        </div>
+        <div class="form-group">
+          <label for="studentId">เลขประจำตัวนักเรียน</label>
+          <input type="text" id="studentId" name="studentId" placeholder="กรอกเลขประจำตัวนักเรียน" required>
+          <div class="error-message" id="studentIdError">กรุณากรอกเลขประจำตัวนักเรียน</div>
+        </div>
+        <button type="submit">ลงทะเบียน</button>
+      </form>
+      <div class="success-message" id="successMessage">การลงทะเบียนสำเร็จ!</div>
+    </div>
+
+    <script>
+      function validateForm() {
+        var isValid = true;
+
+        var name = document.getElementById('name').value.trim();
+        var surname = document.getElementById('surname').value.trim();
+        var studentClass = document.getElementById('class').value.trim();
+        var studentId = document.getElementById('studentId').value.trim();
+
+        if (!name) {
+          document.getElementById('nameError').style.display = 'block';
+          isValid = false;
+        } else {
+          document.getElementById('nameError').style.display = 'none';
+        }
+
+        if (!surname) {
+          document.getElementById('surnameError').style.display = 'block';
+          isValid = false;
+        } else {
+          document.getElementById('surnameError').style.display = 'none';
+        }
+
+        if (!studentClass) {
+          document.getElementById('classError').style.display = 'block';
+          isValid = false;
+        } else {
+          document.getElementById('classError').style.display = 'none';
+        }
+
+        if (!studentId) {
+          document.getElementById('studentIdError').style.display = 'block';
+          isValid = false;
+        } else {
+          document.getElementById('studentIdError').style.display = 'none';
+        }
+
+        if (isValid) {
+          submitForm();
+        }
+
+        return false; // Prevent form submission if there are errors
+      }
+
+      function submitForm() {
+        var form = document.getElementById('registrationForm');
+        var formData = new FormData(form);
+
+        google.script.run.withSuccessHandler(function() {
+          document.getElementById('successMessage').style.display = 'block';
+          form.reset();
+        }).processForm(Object.fromEntries(formData));
+      }
+    </script>
+  </body>
+</html>

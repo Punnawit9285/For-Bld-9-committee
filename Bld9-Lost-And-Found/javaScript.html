@@ -1,0 +1,37 @@
+
+<script>
+  google.script.run.withSuccessHandler(showData).getData();
+  function showData(dataArray){
+    try{
+      dataArray = JSON.parse(dataArray);
+    }catch(e){}
+    $(document).ready(function(){
+      $('#data-table').DataTable({
+        data: dataArray,
+        columns: [
+          {"title":"ลำดับ"},
+          {"title":"รายละเอียดของที่พบ"},
+          {"title":"Contact ของผู้พบ"},
+          {"title":"รูปภาพ (ถ้ามี)",
+            'render':function(data,type) {
+              data = '<img class="profile-img" src="' + formatUrlImg(data) + '" onclick="window.open(this.src)">';
+              return data;
+            }
+          },
+          {"title":"ดาวน์โหลด",
+            'render':function(data,type) {
+              data = '<a href="'+data+'" target="_blank">ดาวน์โหลด</a>';
+              return data;
+            }
+          },
+        ]
+      });
+    });
+  }
+  function formatUrlImg(link){
+    var newLink = link.replace("google.com/open?id=", "google.com/uc?&id=");
+    newLink = newLink.replace("google.com/file/d/", "google.com/uc?&id=");
+    newLink = newLink.replace("/view?usp=sharing", "");
+    return newLink;
+  }
+</script>

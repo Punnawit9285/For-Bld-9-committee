@@ -1,0 +1,260 @@
+<script>  
+$(document).ready(function () {
+            $('.select2').select2({
+                theme: 'bootstrap-5',
+                placeholder: "กรุณาเลือกชื่อ สกุล",
+        escapeMarkup: function (markup) { return markup; },
+         language: {
+        noResults: function () {
+            return "<span style='color:red'><i class='fa-solid fa-circle-xmark text-danger'></i> ไม่พบข้อมูล</span>"
+        }
+    },
+    
+            });
+        });
+   $('#input1').select2().on('select2:open', function(e){
+   $('.select2-search__field').attr('placeholder', 'พิมพ์ค้นหา:ชื่อ สกุล');
+})
+
+       function submitForm(obj){
+           event.preventDefault();
+          if(document.getElementById('input1').value == ""){
+               Swal.fire({
+              position: 'center',
+              icon: 'warning',
+              title: 'กรุณากรอกข้อมูล',
+              showClass: {
+              popup: 'animate__animated animate__fadeInDown'},
+              hideClass: {
+              popup: 'animate__animated animate__fadeOutUp'},
+              showConfirmButton: false,
+              timer: 1500
+            })
+           }else{
+            //  document.getElementById('btn3').style.display="none";
+            //  document.getElementById('btn4').style.display="block"; 
+             document.getElementById('resp-spinner5').classList.remove("d-none");
+             document.getElementById('resp-spinner6').classList.remove("d-none");
+             document.getElementById('resp-spinner7').classList.remove("d-none");             
+             google.script.run.withSuccessHandler(createTable).searchData(obj) 
+           };
+          };
+
+  //HANDLE FORM SUBMISSION
+  function handleFormSubmit(formObject) {
+     event.preventDefault();
+    document.getElementById('btn1').style.display = "none";
+    document.getElementById('btn2').style.display = "block"; 
+    google.script.run.withSuccessHandler(getLastTenRows).processForm(formObject);  
+  }
+  
+  //GET LAST 10 ROWS
+  function getLastTenRows(){
+   google.script.run.withSuccessHandler(createTable).getLastTenRows();
+  }
+  
+  
+  //GET ALL DATA
+  function getAllData(){
+    google.script.run.withSuccessHandler(createTable).getAllData();
+  }
+  
+  google.script.run.withSuccessHandler(createTable).getAllData();
+
+  function createTable(dataArray) {
+    document.getElementById("myForm").reset();
+   // document.getElementById("search-form").reset();
+    document.getElementById('btn2').style.display = "none";
+    document.getElementById('btn1').style.display = "block";
+    // document.getElementById('btn4').style.display="none";
+    // document.getElementById('btn3').style.display="block"; 
+    document.getElementById('resp-spinner5').classList.add("d-none");
+    document.getElementById('resp-spinner6').classList.add("d-none");
+    document.getElementById('resp-spinner7').classList.add("d-none"); 
+      if(dataArray.length > 0){
+            let result = "";
+             
+            for(let i = 0; i < dataArray.length; i++) {
+result += `
+<div id='dataContainer' class='col-12 col-sm-12 col-md-6 col-lg-4'>
+  <div class='notebox'>
+    <div class='notedatecontainer'>
+      <h6>กำหนดการวันที่ : ${dataArray[i][2]}</h6>
+    </div>
+    <p class='pxX noteheading mt-4' id='noteheading' maxlength='25' style='padding-top: 10px;' readonly>
+      <i class='fa-solid fa-pen-to-square'></i> กิจกรรม : ${dataArray[i][1]}
+    </p>
+    <div class='notecontainer'>
+      <hr/>
+      <p class='notedata pxX' style='height: auto' id='notedata' readonly>
+        <i class='fa-solid fa-circle-info'></i> รายละเอียด : ${dataArray[i][3]}
+      </p>
+    </div>
+    <div class='noteaction'>
+      <h6><i class='fa-solid fa-calendar-days'></i> วันที่เพิ่มข้อมูล : ${dataArray[i][4]}&nbsp;&nbsp;</h6>
+      <button type='button' class='btn btn-warning me-2 btn-xs' id='${dataArray[i][0]}' onclick='editData(this.id)' ><i class='fa-solid fa-edit'></i></button>
+      <button type='button' class='btn btn-danger btn-xs' id='${dataArray[i][0]}' onclick='delData(this.id)'><i class='fa-solid fa-trash'></i></button>
+    </div>
+  </div>
+</div>
+`;
+
+            }
+
+
+      var div = document.getElementById('dataTable');
+      div.innerHTML = result;
+      
+      document.getElementById("message").innerHTML = "";
+      document.getElementById('btnclose').click();
+  }}
+
+function showPic(el){
+    //let preview = src
+     let preview = el.getAttribute("src")
+     let idstd = $(el).parent('div').find("#gender").text()
+     console.log(idstd)
+
+}
+
+  //EDIT DATA
+  // function editData(id){
+  //   let recordId = id
+  //   console.log(recordId)
+    
+  //   google.script.run.withSuccessHandler(populateForm).getRecordById(recordId);
+  // }
+  //EDIT DATA
+//EDIT DATA
+function editData(id){
+  let recordId = id;
+  
+  // Prompt user to enter password
+  Swal.fire({
+    title: 'Enter Password',
+    input: 'password',
+    inputPlaceholder: 'Enter password : xxxx',
+    inputAttributes: {
+      autocapitalize: 'off'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'แก้ไขข้อมูล',
+    showLoaderOnConfirm: true,
+    preConfirm: (password) => {
+      // Check if password is correct
+      if (password === '9969') {
+        // Password is correct, open the modal and fetch the record
+        $('#staticBackdrop').modal('show');
+        google.script.run.withSuccessHandler(populateForm).getRecordById(recordId);
+      } else {
+        // Password is incorrect, show error message
+        Swal.showValidationMessage('รหัสผ่านไม่ถูกต้อง');
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  });
+}
+
+
+
+function delData(id){
+    let recordId = id
+    Swal.fire({
+      position: 'center',
+      icon: 'info',
+      text: 'Loading..',
+      showConfirmButton: false,
+      })
+    Swal.showLoading()
+    google.script.run.withSuccessHandler(deleteData).getRecordById(recordId);
+  }
+
+  //DELETE DATA
+  function deleteData(records) {
+   var namedel  = records[0][1];
+   Swal.fire({
+       title: 'Enter Password',
+  input: 'password',
+  inputPlaceholder: 'Enter password : xxxx', // Placeholder text
+  inputAttributes: {
+    autocapitalize: 'off'
+  },
+  showCancelButton: true,
+  confirmButtonText: 'ลบข้อมูล',
+  showLoaderOnConfirm: true,
+  preConfirm: (password) => {
+    // Check if password is correct
+    if (password === '9969') {
+      return true;
+    } else {
+      Swal.showValidationMessage('รหัสผ่านไม่ถูกต้อง');
+    }
+  },
+  allowOutsideClick: () => !Swal.isLoading()
+      // position: 'center',
+      // title: 'คุณต้องการลบใช่ไหม?',
+      // html: "ข้อมูลที่จะลบคือ "+'<span style="color:red">'+namedel+'</span>',
+      // icon: 'warning',
+      // showCancelButton: true,
+      // confirmButtonColor: '#0d6efd',
+      // cancelButtonColor: '#d33',
+      // cancelButtonText: 'ยกเลิก',
+      // confirmButtonText: 'ตกลง'
+}).then((result) => {
+  if (result.isConfirmed) {
+     var recordId = records[0][0];
+      google.script.run.withSuccessHandler(createTable).deleteData(recordId);
+    Swal.fire({
+      position: 'center',
+      title: 'ลบข้อมูลเรียบร้อย',
+      icon: 'success',
+      showConfirmButton: false,
+      timer: 1500
+    })
+  }
+})
+  }
+  
+  //POPULATE FORM
+  function populateForm(records){
+    document.getElementById('RecId').value = records[0][0];
+    document.getElementById('name').value = records[0][1];
+    document.getElementById('dateOfBirth').value = records[0][2];
+    document.getElementById('msg').value = records[0][3];+"</div>";
+  }
+
+ //ปุ่มเพิ่มข้อมูล
+  function addData(){
+    // document.getElementById('colfile').style.display="block";
+    // document.getElementById('btnadd').click();
+
+// Prompt user to enter password
+Swal.fire({
+  title: 'Enter Password',
+  input: 'password',
+  inputPlaceholder: 'Enter password : xxxx', // Placeholder text
+  inputAttributes: {
+    autocapitalize: 'off'
+  },
+  showCancelButton: true,
+  confirmButtonText: 'เพิ่มข้อมูล',
+  showLoaderOnConfirm: true,
+  preConfirm: (password) => {
+    // Check if password is correct
+    if (password === '9969') {
+      return true;
+    } else {
+      Swal.showValidationMessage('รหัสผ่านไม่ถูกต้อง');
+    }
+  },
+  allowOutsideClick: () => !Swal.isLoading()
+}).then((result) => {
+  if (result.isConfirmed) {
+    // Password is correct, open modal
+    $('#btnadd').click();
+  }
+});
+
+    document.getElementById('myForm').reset();
+  }
+</script>

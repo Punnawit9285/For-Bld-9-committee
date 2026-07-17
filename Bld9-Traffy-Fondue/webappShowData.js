@@ -1,0 +1,43 @@
+
+// Editable
+let sheetName = 'TF';
+let index_col = {'Timestamp':0,'ปัญหา / ข้อเสนอ ที่ต้องการรายงาน':1,'ประเภท':2,'รูปภาพ (ถ้ามี)':3, 'สถานะ': 4};
+let order_select_col = [index_col['ปัญหา / ข้อเสนอ ที่ต้องการรายงาน'],index_col['ประเภท'],index_col['รูปภาพ (ถ้ามี)'],index_col['สถานะ']];
+let isFirstNumCol = true; // true or false
+
+function doGet() {
+  return HtmlService.createTemplateFromFile('index').evaluate()
+  .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+  .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function getData() {
+  let ss = SpreadsheetApp.getActive();
+  let sheet = ss.getSheetByName(sheetName);
+  let range = sheet.getDataRange();
+  let values = range.getValues();
+  let format_values = formatData(values);
+  format_values = JSON.stringify(format_values);
+  return format_values;
+}
+
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
+function formatData(_data) {
+  let data = _data;
+  data.shift();
+  for (let i = 0; i < data.length; i++) {
+    let cur_data = data[i];
+    let new_data = [];
+    if (isFirstNumCol) {
+      new_data.push(i+1);
+    }
+    for (let j = 0; j < order_select_col.length; j++) {
+      new_data.push(cur_data[order_select_col[j]]);
+    }
+    data[i] = new_data;
+  }
+  return data;
+}

@@ -1,0 +1,46 @@
+<script>
+  google.script.run.withSuccessHandler(showData).getData();
+
+  function showData(dataArray) {
+    try {
+      dataArray = JSON.parse(dataArray);
+    } catch (e) {
+      console.error('Error parsing data:', e);
+    }
+
+    $(document).ready(function () {
+      $('#data-table').DataTable({
+        data: dataArray,
+        columns: [
+          { "title": "ลำดับ" },
+          { "title": "ปัญหา / ข้อเสนอ ที่ต้องการรายงาน" },
+          { "title": "ประเภท" },
+          {
+            "title": "รูปภาพ (ถ้ามี)",
+            'render': function (data, type) {
+              if (data && data !== '') {
+                const imgUrl = formatUrlImg(data);
+                return '<img class="profile-img" src="' + imgUrl + '" onclick="window.open(this.src)" style="width:100px;height:auto;cursor:pointer;">';
+              }
+              return 'No Image';
+            }
+          },
+          { "title": "สถานะ" },
+        ]
+      });
+    });
+  }
+
+  function formatUrlImg(link) {
+    // Handle different Google Drive link formats
+    if (link.includes("drive.google.com/open?id=")) {
+      return link.replace("open?id=", "uc?export=view&id=");
+    } else if (link.includes("drive.google.com/file/d/")) {
+      const fileId = link.split("/d/")[1].split("/")[0];
+      return 'https://drive.google.com/uc?export=view&id=' + fileId;
+    } else if (link.includes("https://drive.google.com/uc?id=")) {
+      return link; // Already a direct link
+    }
+    return link; // Return the original if no match
+  }
+</script>
